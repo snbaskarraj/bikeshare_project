@@ -6,7 +6,6 @@ import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.preprocessing import OneHotEncoder
 
-
 class WeekdayImputer(BaseEstimator, TransformerMixin):
     """Impute missing values in 'weekday' column by extracting dayname from 'dteday' column"""
 
@@ -21,7 +20,7 @@ class WeekdayImputer(BaseEstimator, TransformerMixin):
         self.date_var = date_var
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None):
-        # we need the fit statement to accomodate the sklearn pipeline
+        # we need the fit statement to accommodate the sklearn pipeline
         return self
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
@@ -51,7 +50,7 @@ class WeathersitImputer(BaseEstimator, TransformerMixin):
         self.variable = variable
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None):
-        # we need the fit statement to accomodate the sklearn pipeline
+        # we need the fit statement to accommodate the sklearn pipeline
         X = X.copy()
         self.fill_value = X[self.variable].mode()[0]
 
@@ -79,7 +78,7 @@ class Mapper(BaseEstimator, TransformerMixin):
         self.mappings = mappings
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None):
-        # we need the fit statement to accomodate the sklearn pipeline
+        # we need the fit statement to accommodate the sklearn pipeline
         return self
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
@@ -104,7 +103,7 @@ class OutlierHandler(BaseEstimator, TransformerMixin):
         self.variable = variable
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None):
-        # we need the fit statement to accomodate the sklearn pipeline
+        # we need the fit statement to accommodate the sklearn pipeline
         X = X.copy()
         q1 = X.describe()[self.variable].loc["25%"]
         q3 = X.describe()[self.variable].loc["75%"]
@@ -138,7 +137,7 @@ class WeekdayOneHotEncoder(BaseEstimator, TransformerMixin):
         self.encoder = OneHotEncoder(sparse_output=False)
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None):
-        # we need the fit statement to accomodate the sklearn pipeline
+        # we need the fit statement to accommodate the sklearn pipeline
         X = X.copy()
         self.encoder.fit(X[[self.variable]])
         # Get encoded feature names
