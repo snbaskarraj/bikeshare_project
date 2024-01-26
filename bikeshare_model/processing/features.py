@@ -38,7 +38,6 @@ class WeekdayImputer(BaseEstimator, TransformerMixin):
 
         return X
 
-
 class WeathersitImputer(BaseEstimator, TransformerMixin):
     """Impute missing values in 'weathersit' column by replacing them with the most frequent category value"""
 
@@ -61,7 +60,6 @@ class WeathersitImputer(BaseEstimator, TransformerMixin):
         X[self.variable] = X[self.variable].fillna(self.fill_value)
 
         return X
-
 
 class Mapper(BaseEstimator, TransformerMixin):
     """
@@ -86,7 +84,6 @@ class Mapper(BaseEstimator, TransformerMixin):
         X[self.variable] = X[self.variable].map(self.mappings).astype(int)
 
         return X
-
 
 class OutlierHandler(BaseEstimator, TransformerMixin):
     """
@@ -123,7 +120,6 @@ class OutlierHandler(BaseEstimator, TransformerMixin):
                 X.loc[i, self.variable] = self.lower_bound
 
         return X
-
 
 class WeekdayOneHotEncoder(BaseEstimator, TransformerMixin):
     """One-hot encode weekday column"""

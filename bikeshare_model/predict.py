@@ -15,15 +15,16 @@ from bikeshare_model.processing.data_manager import load_pipeline
 from bikeshare_model.processing.data_manager import pre_pipeline_preparation
 from bikeshare_model.processing.validation import validate_inputs
 
-
 pipeline_file_name = f"{config.app_config.pipeline_save_file}{_version}.pkl"
 bikeshare_pipe = load_pipeline(file_name=pipeline_file_name)
-
 
 def make_prediction(*, input_data: Union[pd.DataFrame, dict]) -> dict:
     """Make a prediction using a saved model"""
 
-    validated_data, errors = validate_inputs(input_df=pd.DataFrame(input_data))
+    try:
+        validated_data, errors = validate_inputs(input_df=pd.DataFrame(input_data))
+    except ValueError as e:
+        return {"predictions": None, "version": _version, "errors": str(e)}
 
     # validated_data = validated_data.reindex(columns = ['dteday', 'season', 'hr', 'holiday', 'weekday', 'workingday',
     #                                                   'weathersit', 'temp', 'atemp', 'hum', 'windspeed', 'yr', 'mnth'])
@@ -42,11 +43,9 @@ def make_prediction(*, input_data: Union[pd.DataFrame, dict]) -> dict:
 
     return results
 
-
 if __name__ == "__main__":
-
     data_in = {
-        "dteday": ["2012-11-6"],
+        "dteday": ["invalid-date"],  # Example of an invalid date
         "season": ["winter"],
         "hr": ["6pm"],
         "holiday": ["No"],

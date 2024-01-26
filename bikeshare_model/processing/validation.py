@@ -15,7 +15,6 @@ from pydantic import BaseModel, ValidationError
 from bikeshare_model.config.core import config
 from bikeshare_model.processing.data_manager import pre_pipeline_preparation
 
-
 def validate_inputs(*, input_df: pd.DataFrame) -> Tuple[pd.DataFrame, Optional[dict]]:
     """Check model inputs for unprocessable values."""
 
@@ -24,6 +23,9 @@ def validate_inputs(*, input_df: pd.DataFrame) -> Tuple[pd.DataFrame, Optional[d
     errors = None
 
     try:
+        # Handle invalid date format for dteday gracefully
+        validated_data['dteday'] = validated_data['dteday'].apply(handle_date_input)
+        
         # replace numpy nans so that pydantic can validate
         MultipleDataInputs(
             inputs=validated_data.replace({np.nan: None}).to_dict(orient="records")
@@ -33,6 +35,13 @@ def validate_inputs(*, input_df: pd.DataFrame) -> Tuple[pd.DataFrame, Optional[d
 
     return validated_data, errors
 
+def handle_date_input(date_str: Union[str, datetime]) -> Optional[Union[str, datetime]]:
+    try:
+        if isinstance(date_str, str):
+            return datetime.strptime(date_str, "%Y-%m-%d")
+        return date_str
+    except ValueError:
+        return None
 
 class DataInputSchema(BaseModel):
     dteday: Optional[Union[str, datetime]]
@@ -48,7 +57,6 @@ class DataInputSchema(BaseModel):
     windspeed: Optional[float]
     yr: Optional[int]
     mnth: Optional[str]
-
 
 class MultipleDataInputs(BaseModel):
     inputs: List[DataInputSchema]
