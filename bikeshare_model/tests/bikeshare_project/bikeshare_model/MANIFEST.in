@@ -1,0 +1,5 @@
+# bikeshare_model/MANIFEST.in
+# bikeshare_model/MANIFEST.in
+include pyproject.toml
+recursive-include bikeshare_model *.txt *.py *.yml
+recursive-include bikeshare_model/datasets *.csv
