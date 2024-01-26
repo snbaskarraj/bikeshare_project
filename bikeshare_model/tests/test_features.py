@@ -1,7 +1,7 @@
 # bikeshare_model/tests/test_features.py
 # bikeshare_model/tests/test_features.py
 import pandas as pd
-from bikeshare_model.features import (
+from bikeshare_model.processing.features import (
     WeekdayImputer,
     WeathersitImputer,
     Mapper,
